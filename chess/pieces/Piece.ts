@@ -1,6 +1,6 @@
 export type Color = "white" | "black";
 
-const indices = Array.from({ length: 8 }, (_, i) => i + 1);
+const indices = Array.from({ length: 7 }, (_, i) => i + 1);
 
 export const boardCoordinates = indices.map((row) =>
   indices.map((col) => [row, col]),
@@ -15,7 +15,11 @@ export abstract class Piece {
     return this.color;
   }
 
-  possibleMoves(offsets: Position[], [row, col]: Position): Position[] {
+  protected abstract getOffsets(): Position[];
+
+  possibleMoves([row, col]: Position): Position[] {
+    const offsets = this.getOffsets();
+
     return offsets
       .map(
         ([rowOffset, colOffset]): Position => [

@@ -12,8 +12,8 @@ export class Rook extends Piece {
     super(color);
   }
 
-  getPossibleMoves(position: Position): Position[] {
-    return this.possibleMoves(rookOffSets, position);
+  protected getOffsets() {
+    return rookOffSets;
   }
 
   getColor(): Color {

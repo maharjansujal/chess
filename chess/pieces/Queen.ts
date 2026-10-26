@@ -9,8 +9,8 @@ export class Bishop extends Piece {
     super(color);
   }
 
-  getPossibleMoves(position: Position): Position[] {
-    return this.possibleMoves(queenOffsets, position);
+  protected getOffsets() {
+    return queenOffsets;
   }
 
   getColor(): Color {

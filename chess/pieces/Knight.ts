@@ -15,8 +15,8 @@ export class Knight extends Piece {
     super(color);
   }
 
-  getPossibleMoves(position: Position): Position[] {
-    return this.possibleMoves(knightOffsets, position);
+  protected getOffsets() {
+    return knightOffsets;
   }
 
   getColor(): Color {
