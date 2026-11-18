@@ -1,35 +1,27 @@
-import { Knight } from "./pieces/Knight";
-import { Piece, Position } from "./pieces/Piece";
+import { BOARD_SIZE, BoardView, Piece, Position } from "./pieces/Piece";
 
-export class Board {
+export class Board implements BoardView {
   private squares: (Piece | null)[][];
 
   constructor() {
-    this.squares = Array.from({ length: 8 }, () => Array(8).fill(null));
+    this.squares = Array.from({ length: BOARD_SIZE }, () =>
+      Array(BOARD_SIZE).fill(null),
+    );
   }
 
-  getPiece(position: Position) {
-    const [row, col] = position;
-    return this.squares[row][col];
+  isInside([r, c]: Position) {
+    return r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE;
   }
 
-  placePiece(piece: Piece, position: Position) {
-    const [row, col] = position;
-    this.squares[row][col] = piece;
+  getPiece([r, c]: Position) {
+    return this.isInside([r, c]) ? this.squares[r][c] : null;
   }
 
-  movePiece(from: Position, to: Position) {
-    const piece = this.getPiece(from);
-    if (!piece) return;
-    const [fromX, fromY] = from;
-    const [toX, toY] = to;
-    this.squares[fromX][fromY] = null;
-    this.squares[toX][toY] = piece;
+  placePiece(piece: Piece, [r, c]: Position): void {
+    this.squares[r][c] = piece;
+  }
+
+  removePiece([r, c]: Position): void {
+    this.squares[r][c] = null;
   }
 }
-
-const board = new Board();
-
-board.placePiece(new Knight("white"), [7, 1]);
-
-console.log(board.getPiece([7, 1]));
