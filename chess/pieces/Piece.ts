@@ -1,12 +1,13 @@
 export type Color = "white" | "black";
 
-const indices = Array.from({ length: 7 }, (_, i) => i + 1);
-
-export const boardCoordinates = indices.map((row) =>
-  indices.map((col) => [row, col]),
-);
-
 export type Position = [number, number];
+
+export const BOARD_SIZE = 8;
+
+export interface BoardView {
+  getPiece(pos: Position): Piece | null;
+  isInside(pos: Position): boolean;
+}
 
 export abstract class Piece {
   constructor(protected color: Color) {}
@@ -15,18 +16,40 @@ export abstract class Piece {
     return this.color;
   }
 
+  abstract readonly type: string;
+
   protected abstract getOffsets(): Position[];
+  protected abstract isSliding(): boolean;
 
-  possibleMoves([row, col]: Position): Position[] {
+  possibleMoves(board: BoardView, from: Position) {
+    const [row, col] = from;
     const offsets = this.getOffsets();
+    const moves: Position[] = [];
 
-    return offsets
-      .map(
-        ([rowOffset, colOffset]): Position => [
-          row + rowOffset,
-          col + colOffset,
-        ],
-      )
-      .filter(([r, c]) => r >= 0 && r < 8 && c >= 0 && c < 8);
+    for (const [dr, dc] of offsets) {
+      let r = row + dr;
+      let c = col + dc;
+
+      while (board.isInside([r, c])) {
+        const target = board.getPiece([r, c]);
+
+        if (target === null) {
+          moves.push([r, c]);
+        } else {
+          if (target.getColor() !== this.color) moves.push([r, c]);
+          break;
+        }
+
+        if (!this.isSliding()) break;
+
+        r += dr;
+        c += dc;
+      }
+    }
+    return moves;
+  }
+
+  isEnemy(other: Piece | null): boolean {
+    return other !== null && other.getColor() !== this.color;
   }
 }
