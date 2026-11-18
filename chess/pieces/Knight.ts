@@ -11,15 +11,14 @@ const knightOffsets: Position[] = [
 ];
 
 export class Knight extends Piece {
+  readonly type = "N";
   constructor(color: Color) {
     super(color);
   }
-
   protected getOffsets() {
     return knightOffsets;
   }
-
-  getColor(): Color {
-    return this.color;
+  protected isSliding() {
+    return false;
   }
 }

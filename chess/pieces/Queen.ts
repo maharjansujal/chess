@@ -1,19 +1,25 @@
-import { bishopOffsets } from "./Bishop";
-import { Color, Piece, Position } from "./Piece";
-import { rookOffSets } from "./Rook";
+import { Piece, type Color, type Position } from "./Piece";
 
-const queenOffsets = [...rookOffSets, ...bishopOffsets];
+const queenOffsets: Position[] = [
+  [1, 0],
+  [-1, 0],
+  [0, 1],
+  [0, -1],
+  [1, 1],
+  [1, -1],
+  [-1, 1],
+  [-1, -1],
+];
 
-export class Bishop extends Piece {
+export class Queen extends Piece {
+  readonly type = "Q";
   constructor(color: Color) {
     super(color);
   }
-
   protected getOffsets() {
     return queenOffsets;
   }
-
-  getColor(): Color {
-    return this.color;
+  protected isSliding() {
+    return true;
   }
 }

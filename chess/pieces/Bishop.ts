@@ -1,22 +1,21 @@
 import { Color, Piece, Position } from "./Piece";
 
-export const bishopOffsets: Position[] = indices.flatMap((i) => [
-  [i, i],
-  [-i, -i],
-  [i, -i],
-  [-i, i],
-]);
+const bishopOffsets: Position[] = [
+  [1, 1],
+  [1, -1],
+  [-1, 1],
+  [-1, -1],
+];
 
 export class Bishop extends Piece {
+  readonly type = "B";
   constructor(color: Color) {
     super(color);
   }
-
   protected getOffsets() {
     return bishopOffsets;
   }
-
-  getColor(): Color {
-    return this.color;
+  protected isSliding() {
+    return true;
   }
 }
