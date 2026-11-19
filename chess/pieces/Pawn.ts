@@ -7,7 +7,7 @@ export class Pawn extends Piece {
   }
 
   protected getOffsets(): Position[] {
-    return [];
+    return []; // returning [] is just satisfying the abstract contract
   }
   protected isSliding() {
     return false;
@@ -37,6 +37,13 @@ export class Pawn extends Piece {
         const twoFwd: Position = [row + 2 * dir, col];
         if (board.getPiece(twoFwd) === null) moves.push(twoFwd);
       }
+    }
+
+    // Diagonal capture
+    for (const dc of [-1, 1]) {
+      const target: Position = [row + dir, col + dc];
+      if (!board.isInside(target)) continue;
+      if (this.isEnemy(board.getPiece(target))) moves.push(target);
     }
 
     return moves;

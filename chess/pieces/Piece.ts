@@ -7,6 +7,7 @@ export const BOARD_SIZE = 8;
 export interface BoardView {
   getPiece(pos: Position): Piece | null;
   isInside(pos: Position): boolean;
+  // getLastMove(): { from: Position; to: Position } | null;
 }
 
 export abstract class Piece {
